@@ -7,7 +7,7 @@ from typing import List, Dict
 from function_registry import FunctionRegistry
 
 openai.api_base = "https://api.openai.com/v1"
-openai.api_key = os.environ.get("OPENAI_API_KEY0", "sk-foo")
+openai.api_key = os.environ.get("OPENAI_API_KEY", "sk-foo")
 
 
 def chat(messages: Dict, functions:Dict=None):
