@@ -1,0 +1,16 @@
+[
+    {
+        "name": "function_name",
+        "description": "Some function description",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "param1": {
+                    "type": "string",
+                    "description": "param1 description"
+                }
+            },
+            "required": ["param1"]
+        }
+    }
+]

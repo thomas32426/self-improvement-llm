@@ -7,7 +7,7 @@ from typing import List, Dict
 from function_registry import FunctionRegistry
 
 openai.api_base = "https://api.openai.com/v1"
-openai.api_key = os.environ.get("OPENAI_API_KEY", "sk-foo")
+openai.api_key = os.environ.get("OPENAI_API_KEY0", "sk-foo")
 
 
 def chat(messages: Dict, functions:Dict=None):
@@ -25,6 +25,7 @@ def message_step(user_message, messages: List, functions: FunctionRegistry):
     logging.info(json.dumps(messages[-1]))
 
     response = chat(messages, functions.get_function_descriptions())
+    messages.append(response)
     count = 0
     while response.get("function_call") is not None:
         function_name = response.get("function_call")["name"]
@@ -34,10 +35,14 @@ def message_step(user_message, messages: List, functions: FunctionRegistry):
         logging.info(json.dumps(messages[-1]))
 
         response = chat(messages, functions.get_function_descriptions())
+        messages.append(response)
+        logging.info(json.dumps(messages[-1]))
         count += 1
 
-    return messages[-1]
+    return messages
 
+def some_function(param1):
+    return f"Something {param1}"
 
 if __name__ == "__main__":
     os.makedirs('logs', exist_ok=True)
@@ -45,6 +50,8 @@ if __name__ == "__main__":
     messages = [{"role": "system", "content": "You are a helpful assistant"}]
     logging.info(json.dumps(messages[0]))
     functions = FunctionRegistry("functions.json")
+
+    functions.register_function("function_name", some_function)
 
     print("You are now chatting with the AI. Type 'quit' to exit.")
     
@@ -56,7 +63,7 @@ if __name__ == "__main__":
         try:
             responses = message_step(user_input, messages, functions)
             for response in responses:
-                print("AI:", response)
+                print("AI:", response["content"])
         except Exception as e:
             print("An error occurred: ", str(e))
 
