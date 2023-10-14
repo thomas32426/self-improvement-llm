@@ -5,6 +5,7 @@ import logging
 from typing import List, Dict
 
 from function_registry import FunctionRegistry
+import function_library
 
 openai.api_base = "https://api.openai.com/v1"
 openai.api_key = os.environ.get("OPENAI_API_KEY", "sk-foo")
@@ -19,6 +20,7 @@ def chat(messages: Dict, functions:Dict=None):
         temperature = 0.0,
     )
     return response["choices"][0]["message"].to_dict()
+
 
 def message_step(user_message, messages: List, functions: FunctionRegistry):
     messages.append({"role": "user", "content": user_message})
@@ -39,10 +41,8 @@ def message_step(user_message, messages: List, functions: FunctionRegistry):
         logging.info(json.dumps(messages[-1]))
         count += 1
 
-    return messages
+    return [messages[-1]]
 
-def some_function(param1):
-    return f"Something {param1}"
 
 if __name__ == "__main__":
     os.makedirs('logs', exist_ok=True)
@@ -51,7 +51,7 @@ if __name__ == "__main__":
     logging.info(json.dumps(messages[0]))
     functions = FunctionRegistry("functions.json")
 
-    functions.register_function("function_name", some_function)
+    functions.register_function("web_search", function_library.web_search)
 
     print("You are now chatting with the AI. Type 'quit' to exit.")
     

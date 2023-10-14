@@ -1,16 +1,20 @@
 [
     {
-        "name": "function_name",
-        "description": "Some function description",
+        "name": "web_search",
+        "description": "Search Duck Duck Go",
         "parameters": {
             "type": "object",
             "properties": {
-                "param1": {
+                "search_query": {
                     "type": "string",
-                    "description": "param1 description"
+                    "description": "Text query sent to duckduckgo.com"
+                },
+                "max_results": {
+                    "type": "integer",
+                    "description": "Maximum number of results to return"
                 }
             },
-            "required": ["param1"]
+            "required": ["search_query", "max_results"]
         }
     }
 ]
