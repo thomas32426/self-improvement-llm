@@ -22,6 +22,11 @@ def chat(messages: Dict, functions:Dict=None):
     return response["choices"][0]["message"].to_dict()
 
 
+def extract_python_code(s: str) -> str:
+    match = re.search(r'```python(.*?)```', s, re.DOTALL)
+    return match.group(1).strip() if match else "The code wasn't formatted properly, try again."
+
+
 def message_step(user_message, messages: List, functions: FunctionRegistry):
     messages.append({"role": "user", "content": user_message})
     logging.info(json.dumps(messages[-1]))
@@ -52,13 +57,14 @@ if __name__ == "__main__":
     functions = FunctionRegistry("functions.json")
 
     functions.register_function("web_search", function_library.web_search)
+    functions.register_function("execute_code", function_library.execute_code)
 
     print("You are now chatting with the AI. Type 'quit' to exit.")
     
     # Start the interactive chat loop with the AI
     while True:
         user_input = input("User: ").strip()
-        if user_input.lower() == 'quit':
+        if user_input.lower() == 'quit' or user_input.lower() == 'exit':
             break
         try:
             responses = message_step(user_input, messages, functions)

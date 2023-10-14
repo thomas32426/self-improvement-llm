@@ -1,5 +1,23 @@
 [
     {
+        "name": "execute_code",
+        "description": "Execute Python code",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string",
+                    "description": "Text of entire Python script."
+                },
+                "timeout": {
+                    "type": "integer",
+                    "description": "Timeout duration in seconds"
+                }
+            },
+            "required": ["code", "timeout"]
+        }
+    },
+    {
         "name": "web_search",
         "description": "Search Duck Duck Go",
         "parameters": {

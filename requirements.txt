@@ -1,3 +1,5 @@
 openai
 pyautogen
 tiktoken
+flake8
+autopep8
