@@ -22,11 +22,6 @@ def chat(messages: Dict, functions:Dict=None):
     return response["choices"][0]["message"].to_dict()
 
 
-def extract_python_code(s: str) -> str:
-    match = re.search(r'```python(.*?)```', s, re.DOTALL)
-    return match.group(1).strip() if match else "The code wasn't formatted properly, try again."
-
-
 def message_step(user_message, messages: List, functions: FunctionRegistry):
     messages.append({"role": "user", "content": user_message})
     logging.info(json.dumps(messages[-1]))

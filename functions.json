@@ -7,7 +7,7 @@
             "properties": {
                 "code": {
                     "type": "string",
-                    "description": "Text of entire Python script."
+                    "description": "Text of entire Python script"
                 },
                 "timeout": {
                     "type": "integer",
